@@ -5,6 +5,13 @@ Murerwa downloader is a custom downloader beside the default Android downloader 
 Murerwa downloader supports all Android versions since `Android 5.0` and `API Level 21`.
 
 ## Installing
-To install Murerwa Downloader, make sure you have enabled jitpack depositories
+To install Murerwa Downloader, make sure you have enabled jitpack depositories. Make sure the following dependencies are in your root(project-level) `build.gradle` file
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
 
-
+In your app-level `build.gradle` file, add the following dependency
+    dependencies {
+        implementation 'com.github.xwaxes01:murerwa-downloader:1.0.0'
+    }
