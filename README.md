@@ -6,15 +6,19 @@ Murerwa downloader supports all Android versions since `Android 5.0` and `API Le
 
 ## Installing
 To install Murerwa Downloader, make sure you have enabled jitpack depositories. Make sure the following dependencies are in your root(project-level) `build.gradle` file
+    ```gradle
     repositories {
         ...
         maven { url 'https://jitpack.io' }
     }
+    ```
 
 In your app-level `build.gradle` file, add the following dependency
+    ```gradle
     dependencies {
         implementation 'com.github.xwaxes01:murerwa-downloader:1.0.0'
     }
+    ```
 
 ## Contribution
 If your would like to contribute to the project, you could complete any of the following tasks;
