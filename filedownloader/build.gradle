@@ -53,7 +53,7 @@ afterEvaluate {
                 from components.release
 
                 groupId = 'com.github.xwaxes01'
-                artifactId = 'murerwa-filedownloader'
+                artifactId = 'filedownloader'
                 version = '0.0.1'
             }
         }
