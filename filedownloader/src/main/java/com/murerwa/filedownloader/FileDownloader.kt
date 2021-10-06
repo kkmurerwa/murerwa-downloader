@@ -28,15 +28,16 @@ class FileDownloader(
                     Toast.makeText(context, "Downloading file", Toast.LENGTH_LONG).show()
                 }
 
+                // Create directory if does not exist
+                filePath.mkdirs()
+
                 val url = URL(downloadLink)
                 val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
                 connection.doOutput = true
                 connection.doInput = true
                 connection.connect()
-//                val path: File = context.filesDir
-//                val filePath = filePath!!
-                filePath.mkdirs()
+
                 Log.d("LOG_TAG", "PATH: $filePath")
 
                 val fileLength = connection.contentLength
