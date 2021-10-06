@@ -21,7 +21,7 @@ class FileDownloader(
     private val downloadInterface: DownloadInterface
 ) {
 
-    fun downloadToDirectory() {
+    fun downloadFile() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 withContext(Dispatchers.Main) {
@@ -38,15 +38,13 @@ class FileDownloader(
                 connection.doInput = true
                 connection.connect()
 
-                Log.d("LOG_TAG", "PATH: $filePath")
+                Log.d("FILE PATH", "PATH: $filePath")
 
                 val fileLength = connection.contentLength
 
                 Log.d("FILE LENGTH", fileLength.toString())
 
-                Log.v("LOG_TAG", "PATH: $filePath")
-
-                val outputFile = File(filePath, "eparcel.epub")
+                val outputFile = File(filePath, fileName)
                 val fos = FileOutputStream(outputFile)
 
                 val inputStream = if (connection.responseCode != HttpURLConnection.HTTP_OK) {
@@ -56,7 +54,7 @@ class FileDownloader(
                 }
 
                 if (inputStream == connection.errorStream) {
-                    Log.d("ERROR","An error occurred")
+                    Log.d("ERROR","It looks like the passed file does not exist")
                 } else {
                     val buffer = ByteArray(4096)
                     var len1: Int
@@ -64,7 +62,7 @@ class FileDownloader(
                     while (inputStream.read(buffer).also { len1 = it } != -1) {
                         total += len1
                         val progress = (total * 100)/fileLength
-                        Log.d("DOWNLOAD PROGRESS", progress.toString())
+
                         fos.write(buffer, 0, len1)
 
                         withContext(Dispatchers.Main) {

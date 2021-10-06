@@ -36,7 +36,7 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
             downloadInterface = this
         )
 
-        fileDownloader.downloadToDirectory()
+        fileDownloader.downloadFile()
     }
 
     override fun onDownloadProgressChanged(newProgress: Int) {
