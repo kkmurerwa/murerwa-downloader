@@ -15,3 +15,7 @@ In your app-level `build.gradle` file, add the following dependency
     dependencies {
         implementation 'com.github.xwaxes01:murerwa-downloader:1.0.0'
     }
+
+## Contribution
+If your would like to contribute to the project, you could complete any of the following tasks;
+1. Allow ability to request storage permissions from inside the library
