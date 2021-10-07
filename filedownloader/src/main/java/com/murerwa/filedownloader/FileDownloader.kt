@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -24,10 +25,6 @@ class FileDownloader(
     fun downloadFile() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Downloading file", Toast.LENGTH_LONG).show()
-                }
-
                 // Create directory if does not exist
                 filePath.mkdirs()
 
@@ -38,11 +35,11 @@ class FileDownloader(
                 connection.doInput = true
                 connection.connect()
 
-                Log.d("FILE PATH", "PATH: $filePath")
+//                Log.d("FILE PATH", "PATH: $filePath")
 
                 val fileLength = connection.contentLength
 
-                Log.d("FILE LENGTH", fileLength.toString())
+//                Log.d("FILE LENGTH", fileLength.toString())
 
                 val outputFile = File(filePath, fileName)
                 val fos = FileOutputStream(outputFile)
@@ -54,8 +51,14 @@ class FileDownloader(
                 }
 
                 if (inputStream == connection.errorStream) {
-                    Log.d("ERROR","It looks like the passed file does not exist")
+                    withContext(Dispatchers.Main) {
+                        downloadInterface.onErrorOccurred("It looks like the passed link does not exist")
+                    }
                 } else {
+                    withContext(Dispatchers.Main) {
+                        downloadInterface.onDownloadStarted()
+                    }
+
                     val buffer = ByteArray(4096)
                     var len1: Int
                     var total = 0
@@ -73,15 +76,21 @@ class FileDownloader(
                     fos.close()
                     inputStream.close()
 
-                    Log.d("OutputStream", connection.toString())
+//                    Log.d("OutputStream", connection.toString())
 
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Download completed", Toast.LENGTH_LONG).show()
+                        downloadInterface.onDownloadCompleted()
                     }
                 }
 
-            } catch (e: IOException) {
-                e.printStackTrace()
+            } catch (ioException: IOException) {
+                withContext(Dispatchers.Main) {
+                    downloadInterface.onErrorOccurred(ioException.stackTraceToString())
+                }
+            } catch (exception: Exception) {
+                withContext(Dispatchers.Main) {
+                    downloadInterface.onErrorOccurred(exception.stackTraceToString())
+                }
             }
         }
     }

@@ -19,7 +19,13 @@ In your app-level `build.gradle` file, add the following dependency
     }
 
 ## Usage
-To use Murerwa Downloader, create an instance of the `FileDownloader` class in the Fragment you want to perform downloads.
+To use Murerwa Downloader in a Fragment or Activity, implement the `DownloadInterface` in your Fragment/Activity
+
+    class MyFragment : Fragment, DownloadInterface {
+        ...
+    }
+
+To initiate a download, create an instance of the `FileDownloader` class in the Fragment/Activity you want to perform downloads.
 
     val fileDownloader = FileDownloader(
         downloadLink = url,
@@ -28,7 +34,7 @@ To use Murerwa Downloader, create an instance of the `FileDownloader` class in t
         downloadInterface = this
     )
 
-To start the download, simply call the download function of the class.
+Start the download, by simply calling the download function of the class.
 
     fileDownloader.downloadFile()
 
@@ -38,11 +44,39 @@ To observe the download progress of the library, implement to `DownloadInterface
         ...
     }
 
-Then implement the `onDownloadProgressChanged` function and perform any UI/UX tasks
+
+## User Feedback
+The `DownloadInterface` of the Murerwa Downloader library has four functions you can override as shown below.
+
+### 1. OnDownloadProgressChanged
+To keep track of download progress changes, implement the `onDownloadProgressChanged` function and perform any UI/UX tasks
 
     override fun onDownloadProgressChanged(newProgress: Int) {
         // Maybe show the user the download progress
     }
+
+### 2. OnErrorOccurred
+To display error messages if the download fails, override the `onErrorOccurred` function.
+
+    override fun onErrorOccurred(error: String) {
+        // Display an error message or log error
+    }
+
+### 3. OnDownloadStarted
+The library issues a callback when download starts. To show a message, simply override the `onDownloadStarted` function
+
+    override fun onDownloadStarted() {
+        // Do something
+    }
+
+### 4. OnDownloadCompleted
+The library also issues a callback when download completes. To show a message, simply override the `onDownloadCompleted` function
+
+    override fun onDownloadCompleted() {
+        // Do something
+    }
+
+If you do not override any of these functions, a default message is logged to your console.
 
 ## Contribution
 If your would like to contribute to the project, you could complete any of the following tasks;

@@ -1,8 +1,10 @@
 package com.murerwa.murerwadownloader
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
 import com.murerwa.filedownloader.DownloadInterface
 import com.murerwa.filedownloader.FileDownloader
 import com.murerwa.murerwadownloader.databinding.FragmentFirstBinding
@@ -13,10 +15,8 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
 
     private val binding get() = _binding!!
 
-//    private val url = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/1200px-A._Schwarzenegger.jpg"
-//    private val url = "https://parcelle.kuzasystems.com/downloads/releases/1.0.1.15.apk"
     private val url = "http://www.ecomesty.co.ke/kytabu/the-time-machine-by-h.-g.-wells.epub"
-//    private val url = "https://murerwa.com/murerwa_cv.pdf"
+//    private val url = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,8 +40,24 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
     }
 
     override fun onDownloadProgressChanged(newProgress: Int) {
+        super.onDownloadProgressChanged(newProgress)
         binding.progressBar.progress = newProgress
         binding.textView.text = "$newProgress%"
+    }
+
+    override fun onDownloadStarted() {
+        super.onDownloadStarted()
+        Toast.makeText(context, "Downloading started", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDownloadCompleted() {
+        super.onDownloadCompleted()
+        Toast.makeText(context, "Download completed", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onErrorOccurred(error: String) {
+        super.onErrorOccurred(error)
+        Toast.makeText(context, "Sorry. The download could not be completed", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

@@ -54,7 +54,7 @@ afterEvaluate {
 
                 groupId = 'com.github.xwaxes01'
                 artifactId = 'filedownloader'
-                version = '0.0.5'
+                version = '0.0.6'
             }
         }
     }
