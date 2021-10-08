@@ -1,21 +1,23 @@
 # Murerwa Downloader
 Murerwa downloader is a custom downloader library beside the default Android downloader that helps users download files on the fly and save them to folders that the default Android downloader cannot.
 
+Latest Version: [![Release](https://jitpack.io/v/User/Repo.svg)] (https://jitpack.io/kmurerwa/murerwa-downloader)
+
 ## Supported Android Versions
 Murerwa downloader supports all Android versions since `Android 5.0` and `API Level 21`.
 
 ## Installing
-To install Murerwa Downloader, make sure you have enabled jitpack depositories. Make sure the following dependencies are in your root `settings.gradle` file
+To install Murerwa Downloader, make sure you have enabled jitpack depositories. Make sure the following dependencies are in your root (project-level) `build.gradle` file or on your `settings.gradle` file if you are using Android Studio 2020.3.1 (Arctic Fox) and above.
     
     repositories {
         ...
         maven { url 'https://jitpack.io' }
     }
 
-In your app-level `build.gradle` file, add the following dependency
+In your app-level `build.gradle` file, add the following dependency. Check the top of this file for the latest version.
 
     dependencies {
-        implementation 'com.github.xwaxes01:murerwa-downloader:1.0.0'
+        implementation 'com.github.kmurerwa:murerwa-downloader:Version'
     }
 
 ## Usage
