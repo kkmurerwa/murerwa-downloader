@@ -3,8 +3,6 @@ Murerwa downloader is a custom downloader library beside the default Android dow
 
 Latest Version: [![](https://jitpack.io/v/kmurerwa/murerwa-downloader.svg)](https://jitpack.io/#kmurerwa/murerwa-downloader)
 
- [![](https://jitpack.io/v/ronnieotieno/Ronnie-Image-Picker.svg)](https://jitpack.io/#ronnieotieno/Ronnie-Image-Picker)
-
 ## Supported Android Versions
 Murerwa downloader supports all Android versions since `Android 5.0` and `API Level 21`.
 
