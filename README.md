@@ -8,7 +8,7 @@ Murerwa downloader is a custom downloader library beside the default Android dow
 Murerwa downloader supports all Android versions since `Android 5.0` and `API Level 21`.
 
 ## Installing
-To install Murerwa Downloader, make sure you have enabled jitpack depositories. Make sure the following dependencies are in your root (project-level) `build.gradle` file or on your `settings.gradle` file if you are using Android Studio 2020.3.1 (Arctic Fox) and above.
+To install Murerwa Downloader, make sure you have enabled jitpack depositories. Make sure the following dependencies are in your root (project-level) `build.gradle` file or on your `settings.gradle` file if you are using `Android Studio 2020.3.1 (Arctic Fox)` and above.
     
     repositories {
         ...
