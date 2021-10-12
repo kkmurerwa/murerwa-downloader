@@ -1,8 +1,10 @@
 package com.murerwa.filedownloader
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,6 +23,21 @@ class FileDownloader(
     private var filePath: File = context.filesDir,
     private val downloadInterface: DownloadInterface
 ) {
+    private fun hasWriteToStoragePermission() =
+        ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+    fun requestStoragePermissions() {
+        var permissionsToRequest = mutableListOf<String>()
+
+        if (!hasWriteToStoragePermission()) {
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            ActivityCompat.requestPermissions(context as Activity, permissionsToRequest.toTypedArray(), 0)
+        }
+    }
 
     fun downloadFile() {
         GlobalScope.launch(Dispatchers.IO) {
@@ -93,5 +110,13 @@ class FileDownloader(
                 }
             }
         }
+    }
+
+    fun checkIfFileExists(): Boolean {
+        filePath.mkdirs()
+
+        val filePathName = File(filePath, fileName)
+
+        return filePathName.exists()
     }
 }

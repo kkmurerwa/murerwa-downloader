@@ -18,6 +18,15 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
     private val url = "http://www.ecomesty.co.ke/kytabu/the-time-machine-by-h.-g.-wells.epub"
 //    private val url = ""
 
+    private val fileDownloader by lazy {
+        FileDownloader(
+            downloadLink = url,
+            context = requireActivity(),
+            fileName = "test.epub",
+            downloadInterface = this
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -29,13 +38,6 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
     }
 
     private fun downloadViaInterface() {
-        val fileDownloader = FileDownloader(
-            downloadLink = url,
-            context = requireActivity(),
-            fileName = "test.epub",
-            downloadInterface = this
-        )
-
         fileDownloader.downloadFile()
     }
 
@@ -52,7 +54,11 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
 
     override fun onDownloadCompleted() {
         super.onDownloadCompleted()
-        Toast.makeText(context, "Download completed", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Download completed", Toast.LENGTH_SHORT).show()
+
+        if (fileDownloader.checkIfFileExists()) {
+            Toast.makeText(context, "File exists", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onErrorOccurred(error: String) {
