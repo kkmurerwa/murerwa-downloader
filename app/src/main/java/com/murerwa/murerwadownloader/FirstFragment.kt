@@ -54,11 +54,11 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
 
     override fun onDownloadCompleted() {
         super.onDownloadCompleted()
-//        Toast.makeText(context, "Download completed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Download completed", Toast.LENGTH_SHORT).show()
 
-        if (fileDownloader.checkIfFileExists()) {
-            Toast.makeText(context, "File exists", Toast.LENGTH_SHORT).show()
-        }
+//        if (fileDownloader.checkIfFileExists()) {
+//            Toast.makeText(context, "File exists", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     override fun onErrorOccurred(error: String) {
