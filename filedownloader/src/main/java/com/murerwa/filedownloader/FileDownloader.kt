@@ -2,9 +2,11 @@ package com.murerwa.filedownloader
 
 import android.Manifest
 import android.app.Activity
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -15,35 +17,35 @@ import java.io.IOException
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
+import android.content.ContextWrapper
+import android.os.Build
+import android.os.Environment
+import android.util.Log
+import androidx.annotation.RequiresApi
 
 class FileDownloader(
     private val downloadLink: String,
     private val context: Context,
     private val fileName: String,
-    private var filePath: File = context.filesDir,
+    private var filePath: String = context.filesDir.toString(),
+    private var activity: Activity,
     private val downloadInterface: DownloadInterface
 ) {
-    private fun hasWriteToStoragePermission() =
-        ActivityCompat.checkSelfPermission(
-            context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
-
-    fun requestStoragePermissions() {
-        var permissionsToRequest = mutableListOf<String>()
-
-        if (!hasWriteToStoragePermission()) {
-            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun downloadFile() {
+        if (filePath == context.filesDir.toString()) {
+            executeDownload()
         } else {
-            ActivityCompat.requestPermissions(context as Activity, permissionsToRequest.toTypedArray(), 0)
+            filePath = "storage/emulated/0/$filePath"
+
+            requestStoragePermission()
         }
     }
 
-    fun downloadFile() {
+    private fun executeDownload() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 // Create directory if does not exist
-                filePath.mkdirs()
+                File(filePath).mkdirs()
 
                 val url = URL(downloadLink)
                 val connection = url.openConnection() as HttpURLConnection
@@ -52,11 +54,7 @@ class FileDownloader(
                 connection.doInput = true
                 connection.connect()
 
-//                Log.d("FILE PATH", "PATH: $filePath")
-
                 val fileLength = connection.contentLength
-
-//                Log.d("FILE LENGTH", fileLength.toString())
 
                 val outputFile = File(filePath, fileName)
                 val fos = FileOutputStream(outputFile)
@@ -93,8 +91,6 @@ class FileDownloader(
                     fos.close()
                     inputStream.close()
 
-//                    Log.d("OutputStream", connection.toString())
-
                     withContext(Dispatchers.Main) {
                         downloadInterface.onDownloadCompleted()
                     }
@@ -113,10 +109,49 @@ class FileDownloader(
     }
 
     fun checkIfFileExists(): Boolean {
-        filePath.mkdirs()
+        File(filePath).mkdirs()
 
         val filePathName = File(filePath, fileName)
 
         return filePathName.exists()
+    }
+
+    fun getFilePath(): String {
+        return filePath
+    }
+
+    private fun requestStoragePermission() {
+        val applicationContext = context.applicationContext
+
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) -> {
+                // No need to do anything
+                Log.d("READ EXTERNAL STORAGE", "Permission granted")
+
+                executeDownload()
+            }
+            ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) -> {
+                // No need to do anything
+                Log.d("WRITE EXTERNAL STORAGE", "Permission granted")
+
+                executeDownload()
+            }
+            else -> {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ),
+                    1
+                )
+            }
+        }
     }
 }

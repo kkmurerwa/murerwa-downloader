@@ -1,6 +1,7 @@
 package com.murerwa.murerwadownloader
 
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.Toast
 import com.murerwa.filedownloader.DownloadInterface
 import com.murerwa.filedownloader.FileDownloader
 import com.murerwa.murerwadownloader.databinding.FragmentFirstBinding
+import java.io.File
 
 
 class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
@@ -16,13 +18,14 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
     private val binding get() = _binding!!
 
     private val url = "http://www.ecomesty.co.ke/kytabu/the-time-machine-by-h.-g.-wells.epub"
-//    private val url = ""
 
     private val fileDownloader by lazy {
         FileDownloader(
             downloadLink = url,
             context = requireActivity(),
             fileName = "test.epub",
+            filePath = "Download",
+            activity = requireActivity(),
             downloadInterface = this
         )
     }
@@ -33,6 +36,8 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
         _binding = FragmentFirstBinding.bind(view)
 
         binding.buttonFirst.setOnClickListener {
+            Log.d("FILE PATH", fileDownloader.getFilePath())
+
             downloadViaInterface()
         }
     }
@@ -55,10 +60,6 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
     override fun onDownloadCompleted() {
         super.onDownloadCompleted()
         Toast.makeText(context, "Download completed", Toast.LENGTH_SHORT).show()
-
-//        if (fileDownloader.checkIfFileExists()) {
-//            Toast.makeText(context, "File exists", Toast.LENGTH_SHORT).show()
-//        }
     }
 
     override fun onErrorOccurred(error: String) {
