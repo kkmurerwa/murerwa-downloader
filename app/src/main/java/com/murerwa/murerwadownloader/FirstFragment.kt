@@ -24,7 +24,6 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
             downloadLink = url,
             context = requireActivity(),
             fileName = "test.epub",
-            filePath = "Download",
             activity = requireActivity(),
             downloadInterface = this
         )

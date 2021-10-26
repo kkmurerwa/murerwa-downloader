@@ -32,13 +32,7 @@ class FileDownloader(
     private val downloadInterface: DownloadInterface
 ) {
     fun downloadFile() {
-        if (filePath == context.filesDir.toString()) {
-            executeDownload()
-        } else {
-            filePath = "storage/emulated/0/$filePath"
-
-            requestStoragePermission()
-        }
+        executeDownload()
     }
 
     private fun executeDownload() {
