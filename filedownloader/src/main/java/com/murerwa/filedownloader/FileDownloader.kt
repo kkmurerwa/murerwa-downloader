@@ -50,6 +50,14 @@ class FileDownloader(
 
                 val fileLength = connection.contentLength
 
+                if (fileLength < 0) {
+                    withContext(Dispatchers.Main) {
+                        downloadInterface.onErrorOccurred("We encountered an error downloading the file. The file might be unreachable.")
+                    }
+
+                    return@launch
+                }
+
                 val outputFile = File(filePath, fileName)
                 val fos = FileOutputStream(outputFile)
 
@@ -89,6 +97,7 @@ class FileDownloader(
                         downloadInterface.onDownloadCompleted()
                     }
                 }
+
 
             } catch (ioException: IOException) {
                 withContext(Dispatchers.Main) {

@@ -17,7 +17,9 @@ class FirstFragment : Fragment(R.layout.fragment_first), DownloadInterface {
 
     private val binding get() = _binding!!
 
+//    private val url = "https://p303.zlibcdn.com/dtoken/a2b5e71d182ed58f2fddae0e5b6018af"
     private val url = "http://www.ecomesty.co.ke/kytabu/the-time-machine-by-h.-g.-wells.epub"
+//    private val url = "https://www.makeuseof.com/check-suspicious-file-malware"
 
     private val fileDownloader by lazy {
         FileDownloader(
